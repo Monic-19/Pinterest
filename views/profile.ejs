@@ -15,23 +15,48 @@
           <div class="profile-picture">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9kZWx8ZW58MHx8MHx8fDA%3D" alt="Profile Picture">
           </div>
-          <h2 class="name">FullName</h2>
-          <h3 class="username">@username</h3>
+          <h2 class="name"><%= user.fullname %></h2>
+          <h3 class="username">@<%= user.username%></h3>
           <p class="tagline">Tag line</p>
           <p class="description">Description</p>
-          <a href="#" class="button">Account settings</a>
+          <a href="/logout" class="button">Logout</a>
         </div>
     </div>
 
-    <div class="container">
-        <div class="card" style="width: 18rem;">
-            <img src="https://images.unsplash.com/photo-1704841632563-b40ffa74ae09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">All Design</h5>
-            </div>
-          </div>
+    <div class="containerper form-container">
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file-input" class="file-label">
+            <span>Choose File</span>
+            <input type="file" name="file" id="file-input">
+        </label>
+
+        <label for="text-input" class="text-label">
+            <span>Caption</span>
+            <input type="text" name="filecaption" id="text-input" placeholder="Enter some caption">
+        </label>
+
+        <% if (errorMessage) { %>
+          <div class="flash-message-error"><%= errorMessage %></div>
+        <% } %>
+
+        <button type="submit" class="submit-button">Upload your Image</button>
+    </form>
     </div>
 
+    <div class="container">
+
+      <div class="cards flex">
+        <% user.posts.forEach(function(post){ %>
+          <div class="card" style="width: 18rem;">
+              <img src="/images/uploads/<%= post.image %>" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title"><%= post.imagetext%></h5>
+              </div>
+            </div>
+        <%})%>
+      </div>
+
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>

@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const flash = require("connect-flash");
 
 var app = express();
 
@@ -15,6 +16,8 @@ const passport = require('passport');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(flash())
 
 app.use(expressSession({
   resave : false,

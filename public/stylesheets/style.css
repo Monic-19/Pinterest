@@ -138,3 +138,10 @@ hr {
   margin: 4px 0 ;
   margin-left: 25%;
 }
+
+.error{
+  font-weight: 500;
+  color: red;
+  text-transform: uppercase;
+  margin: 7px 0;
+}
