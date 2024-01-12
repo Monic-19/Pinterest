@@ -33,6 +33,10 @@ router.get('/feed',function(req, res) {
   res.render('feed');
 });
 
+router.get("/edit", function(req,res){
+  res.render("edit")
+})
+
 router.post("/upload", isloggedin ,upload.single("file") ,async function(req,res){
   if(!req.file){
     req.flash('error', 'File upload failed. Please try again.');
