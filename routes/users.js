@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   dp: { type: String }, // Profile picture URL
   email: { type: String },
-  fullname: { type: String }
+  fullname: { type: String },
+  description : {type : String},
 });
 
 userSchema.plugin(plm);

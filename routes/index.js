@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const mongoose = require("mongoose")
 
 const userModel = require('./users')
 const postModel = require("./post")
@@ -21,7 +22,7 @@ router.get('/profile', isloggedin ,async function(req, res) {
     username : req.session.passport.user
   })
   .populate("posts");
-  console.log(user)
+  // console.log(user)
   res.render('profile', {user, errorMessage});
 });
 
@@ -33,9 +34,37 @@ router.get('/feed',function(req, res) {
   res.render('feed');
 });
 
-router.get("/edit", function(req,res){
+router.get("/edit", isloggedin ,async function(req,res){
   res.render("edit")
 })
+
+router.post("/editdata",  isloggedin ,upload.single("file") ,async function(req,res){
+  const currentUser = await userModel.findOne({ username : req.session.passport.user });
+
+  
+  if (req.file || req.body.bio) {
+    const updateFields = {};
+  
+    if (req.file) {
+      updateFields.dp = req.file.filename;
+    }
+  
+    if (req.body.bio) {
+      updateFields.description = req.body.bio;
+    }
+  
+    const updatedUser = await userModel.findOneAndUpdate(
+      { username: req.session.passport.user },
+      { $set: updateFields },
+      { new: true }
+    );
+  
+    // console.log(updatedUser);
+  }
+  
+  res.redirect('/profile');
+})
+
 
 router.post("/upload", isloggedin ,upload.single("file") ,async function(req,res){
   if(!req.file){
@@ -92,6 +121,19 @@ function isloggedin(req,res,next){
   if(req.isAuthenticated()){return next()}
   res.redirect("/login")
 }
+
+router.post("/deleteuser", async(req,res) => {
+  if(req.body.confirmdelete == "confirm"){
+    const userToDelete = await userModel.findOne({username : req.session.passport.user}); ;
+    const userIdToDelete = userToDelete._id;
+    console.log("id : ",userIdToDelete)
+    await userModel.deleteOne({ _id: userIdToDelete });
+    await postModel.deleteMany({ user: userIdToDelete });
+    console.log('User and associated posts deleted successfully.');
+  }
+    
+    res.redirect("/login")
+})
 
 
 module.exports = router;
