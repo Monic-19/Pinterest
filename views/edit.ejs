@@ -12,18 +12,23 @@
             <h2>Update Profile And Bio</h2>
             <form action="/editdata" method="post" enctype="multipart/form-data">
                 <input type="file" name="file">
-                <input type="text" name="bio" placeholder="Enter your bio">
-                <button type="submit" class="submit-button">Save Data</button>
+                <br>
+                <div>
+                    <input type="text" name="bio" placeholder="Enter your bio">
+                    <button type="submit" class="submit-button">Save Data</button>
+                </div>
             </form>
         </div>
 
         <hr>
 
         <div class="box box2">
-            <h2>delete your account</h2>
+            <h2>Delete your account</h2>
             <form action="/deleteuser" method="post" >
-                <input type="text" name="confirmdelete" placeholder="Type confirm">
-                <button type="submit">delete</button>
+                <div>
+                    <input type="text" name="confirmdelete" placeholder="Type confirm">
+                    <button type="submit" class="submit-button sb2">Delete</button>
+                </div>
             </form>
         </div>
     </div>

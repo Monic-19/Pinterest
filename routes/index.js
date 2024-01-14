@@ -30,8 +30,12 @@ router.get('/login',function(req, res) {
   res.render('login', {error : req.flash("error")});
 });
 
-router.get('/feed',function(req, res) {
-  res.render('feed');
+router.get('/feed',async function(req, res) {
+  const posts = await postModel.find().populate("user")
+  // console.log(posts)
+  const totalPosts = await postModel.countDocuments()
+
+  res.render('feed', {posts, totalPosts});
 });
 
 router.get("/edit", isloggedin ,async function(req,res){
@@ -99,13 +103,13 @@ router.post("/register", function (req, res) {
   userModel.register(userData, req.body.password)
     .then(function (registeredUser) {
       passport.authenticate("local")(req, res, function () {
-        res.redirect("/profile");
+        res.redirect("/feed");
       })
     })
 })
 
 router.post("/login",passport.authenticate("local",{
-  successRedirect : "/profile",
+  successRedirect : "/feed",
   failureRedirect: "/login",
   failureFlash : true,
 }), function(req,res){})
